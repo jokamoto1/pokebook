@@ -9,8 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.jeremy.pokebook.models.Expense;
 import com.jeremy.pokebook.services.ExpenseService;
 @Controller
@@ -31,6 +34,23 @@ public class ExpenseController {
 //    	model.addAttribute("expense");
     	return "dashboard.jsp";	
     }
+    @RequestMapping("/edit/{id}")
+    public String edit(Model model,@PathVariable("id") Long id , @Valid @ModelAttribute("expense") Expense expense, BindingResult result ) {
+    	if (result.hasErrors()) {
+	    	model.addAttribute("expense");
+			return "edit.jsp";
+		}
+    	expenseService.create(expense);
+    	
+    	return "redirect:/";	
+    }
+    @RequestMapping("/show/edit/{id}")
+    public String showEdit(Model model,@PathVariable("id") Long id , @ModelAttribute("expense") Expense expense) {
+    	Expense oneExpense = expenseService.findExpense(id);
+    	model.addAttribute("oneExpense" , oneExpense);
+   
+    	return "edit.jsp";	
+    }
     @RequestMapping(value="/create", method=RequestMethod.POST)
     public String create(@Valid @ModelAttribute("expense") Expense expense, BindingResult result, Model model
 //    		@RequestParam(value="name") String name,
@@ -48,4 +68,5 @@ public class ExpenseController {
     		expenseService.create(expense);
     		return "redirect:/";
     }
+    
 }

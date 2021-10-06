@@ -11,8 +11,10 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.lang.NonNull;
 @Entity
 @Table(name="expenses")
 public class Expense {
@@ -20,20 +22,22 @@ public class Expense {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @NotNull(message="Name must be entered!")
-    @Min(value=1, message="Name must be entered!")
+//    @NotNull
+    @NotEmpty(message="Name must be entered!")
+//    @Min(value=1, message="Name must be entered!")
     private String name;
     
-    @NotNull(message="Vendor must be entered!")
-    @Min(value=1, message="Vendor must be entered!")
+    
+    @NotEmpty(message="Vendor must be entered!")
+//    @Min(value=1, message="Vendor must be entered!")
     private String vendor;
     
     @NotNull(message="Amount must be entered!")
     @DecimalMin(message="Amount must be greated than 0!", value = "0.01")
     private Double amount;
     
-    @Min(value=1, message="Description must be entered!")
-    @NotNull(message="Description must be entered!")
+//    @Min(value=1, message="Description must be entered!")
+    @NotEmpty(message="Description must be entered!")
     private String description;
     
     // This will not allow the createdAt column to be updated after creation
