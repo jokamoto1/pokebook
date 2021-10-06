@@ -51,6 +51,17 @@ public class ExpenseController {
    
     	return "edit.jsp";	
     }
+    @RequestMapping(value="/delete/{id}", method=RequestMethod.DELETE)
+    public String destroy(@PathVariable("id") Long id) {
+        expenseService.deleteExpense(id);
+        return "redirect:/";
+    }
+    @RequestMapping(value="/view/{id}")
+    public String view(@PathVariable("id") Long id, Model model) {
+    	Expense expense =expenseService.findExpense(id);
+    	model.addAttribute("expense", expense);
+    	return "view.jsp";
+    }
     @RequestMapping(value="/create", method=RequestMethod.POST)
     public String create(@Valid @ModelAttribute("expense") Expense expense, BindingResult result, Model model
 //    		@RequestParam(value="name") String name,
